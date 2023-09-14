@@ -80,9 +80,46 @@ class PaintZone(QLabel):
         self.prev_x = local_point.x()
         self.prev_y = local_point.y()
 
-    def flood_fill(self, color, x, y):
-        if x >= 0 and x <= 692 and y >= 0 and y <= 564:
-            print(color)
+    def slow_flood_fill(self, color, x, y):
+        queue = [[x, y]]
+        image = self.pixmap().toImage()
+        image.setPixelColor(x, y, self.p_color)
+        pm = QPixmap.fromImage(image)
+        self.setPixmap(pm)
+
+        while queue:
+            QApplication.processEvents()
+            n_x, n_y = queue.pop(0)
+            print(n_x, n_y)
+
+            if self.to_fill(color, n_x + 1, n_y):
+                image.setPixelColor(n_x + 1, n_y, self.p_color)
+                queue.append([n_x + 1, n_y])
+
+            if self.to_fill(color, n_x - 1, n_y):
+                image.setPixelColor(n_x - 1, n_y, self.p_color)
+                queue.append([n_x - 1, n_y])
+
+            if self.to_fill(color, n_x, n_y + 1):
+                image.setPixelColor(n_x, n_y + 1, self.p_color)
+                queue.append([n_x, n_y + 1])
+
+            if self.to_fill(color, n_x, n_y - 1):
+                image.setPixelColor(n_x, n_y - 1, self.p_color)
+                queue.append([n_x, n_y - 1])
+
+            self.setPixmap(QPixmap.fromImage(image))
+
+
+
+
+    def to_fill(self, color, x, y):
+        curr_color = QColor(self.pixmap().toImage().pixel(x, y))
+        if x >= 0 and x <= 692 and y >= 0 and y <= 564 and color == curr_color:
+            return True
+        return False
+
+
 
     def mouseReleaseEvent(self, e):
         self.prev_x = None
@@ -96,7 +133,7 @@ class PaintZone(QLabel):
             self.prev_paintZones.append(a)
 
         if self.type == 'f':
-            self.flood_fill(color, x, y)
+            self.slow_flood_fill(color, x, y)
 
         elif self.type == 'p':
             self.change_color(color)
