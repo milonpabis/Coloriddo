@@ -72,6 +72,7 @@ class PaintZone(QLabel):
             pass
 
 
+
         painter.end()
         self.setPixmap(play_gr)
 
@@ -79,27 +80,28 @@ class PaintZone(QLabel):
         self.prev_x = local_point.x()
         self.prev_y = local_point.y()
 
-    def flood_fill(self, point):
-        x, y = point.x(), point.y()
+    def flood_fill(self, color, x, y):
         if x >= 0 and x <= 692 and y >= 0 and y <= 564:
-            color = QColor(self.pixmap().toImage().pixel(x, y))
             print(color)
-
-
 
     def mouseReleaseEvent(self, e):
         self.prev_x = None
         self.prev_y = None
 
     def mousePressEvent(self, e):
+        x, y = e.position().x(), e.position().y() + self.TOOLBAR_H
+        color = QColor(self.pixmap().toImage().pixel(x, y))
         if len(self.prev_paintZones) < 50:
             a = self.pixmap().copy()
             self.prev_paintZones.append(a)
 
         if self.type == 'f':
-            self.flood_fill(e.position())
+            self.flood_fill(color, x, y)
 
-        # pz = self.pixmap()
+        elif self.type == 'p':
+            self.change_color(color)
+
+    # pz = self.pixmap()
         # painter = QPainter(pz)
         # pen = painter.pen()
         # pen.setWidth(self.p_width)
@@ -145,3 +147,6 @@ class PaintZone(QLabel):
 
     def set_fill(self):
         self.type = 'f'
+
+    def set_pipette(self):
+        self.type = 'p'

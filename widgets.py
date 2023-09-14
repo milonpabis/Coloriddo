@@ -136,3 +136,11 @@ class FloodFill(BrushButton):
         super().__init__()
         self.setIcon(QIcon("icons/fill.png"))
 
+
+# -------------------------------------------------------- FLOOD FILL WIDGET
+class Pipette(BrushButton):
+
+    def __init__(self):
+        super().__init__()
+        self.setIcon(QIcon("icons/pipette.png"))
+

@@ -64,7 +64,8 @@ class Window(QMainWindow):
         self.random = RandomBrushButton()                   # RANDOM
         self.mirror = MirrorBrushButton()                   # MIRROR
         self.text = TextCreator()                           # TEXT
-        self.fill = FloodFill()
+        self.fill = FloodFill()                             # FLOOD FILL
+        self.pipette = Pipette()
 
         self.button_group.addButton(self.brush)
         self.button_group.addButton(self.spray)
@@ -73,6 +74,7 @@ class Window(QMainWindow):
         self.button_group.addButton(self.mirror)
         self.button_group.addButton(self.text)
         self.button_group.addButton(self.fill)
+        self.button_group.addButton(self.pipette)
 
         self.brush.setChecked(True)
         self.button_group.buttonPressed.connect(self.change_tool)
@@ -98,6 +100,7 @@ class Window(QMainWindow):
         self.toolbar.addWidget(self.brush)
         self.toolbar.addWidget(self.spray)
         self.toolbar.addWidget(self.fill)
+        self.toolbar.addWidget(self.pipette)
         self.toolbar.addWidget(self.eraser)
         self.toolbar.addWidget(self.random)
         self.toolbar.addWidget(self.mirror)
@@ -152,6 +155,8 @@ class Window(QMainWindow):
             self.paintZone.set_text()
         elif button == self.fill:
             self.paintZone.set_fill()
+        elif button == self.pipette:
+            self.paintZone.set_pipette()
 
     def change_width(self, width):
         self.paintZone.change_width(width)
