@@ -18,7 +18,7 @@ class PaintZone(QLabel):
         self.prev_x = None
         self.prev_y = None
 
-        self.p_color = QColor("000000")
+        self.p_color = QColor("#000000")
         self.p_width = 1
         self.type = None
         self.set_brush()
@@ -86,8 +86,10 @@ class PaintZone(QLabel):
         image.setPixelColor(x, y, self.p_color)
         pm = QPixmap.fromImage(image)
         self.setPixmap(pm)
+        i = 0
 
         while queue:
+            i += 1
             QApplication.processEvents()
             n_x, n_y = queue.pop(0)
             print(n_x, n_y)
@@ -108,7 +110,8 @@ class PaintZone(QLabel):
                 image.setPixelColor(n_x, n_y - 1, self.p_color)
                 queue.append([n_x, n_y - 1])
 
-            self.setPixmap(QPixmap.fromImage(image))
+            if i % 100 == 1:
+                self.setPixmap(QPixmap.fromImage(image))
 
 
 
@@ -133,7 +136,8 @@ class PaintZone(QLabel):
             self.prev_paintZones.append(a)
 
         if self.type == 'f':
-            self.slow_flood_fill(color, x, y)
+            if self.p_color != color:
+                self.slow_flood_fill(color, x, y)
 
         elif self.type == 'p':
             self.change_color(color)
