@@ -92,7 +92,6 @@ class PaintZone(QLabel):
             i += 1
             QApplication.processEvents()
             n_x, n_y = queue.pop(0)
-            print(n_x, n_y)
 
             if self.to_fill(color, n_x + 1, n_y):
                 image.setPixelColor(n_x + 1, n_y, self.p_color)
@@ -142,15 +141,6 @@ class PaintZone(QLabel):
         elif self.type == 'p':
             self.change_color(color)
 
-    # pz = self.pixmap()
-        # painter = QPainter(pz)
-        # pen = painter.pen()
-        # pen.setWidth(self.p_width)
-        # pen.setColor(self.p_color)
-        # painter.setPen(pen)
-        # painter.drawPoint(QPoint(e.position().x(), e.position().y() + self.TOOLBAR_H))
-        # painter.end()
-        # self.setPixmap(pz)
 
     def undo(self):
         if len(self.prev_paintZones):
